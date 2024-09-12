@@ -32,6 +32,7 @@ from ark_sdk_python.models.services.dpa.sso import ArkDPASSOGetShortLivedPasswor
 from ark_sdk_python.models.services.dpa.workspaces.db.ark_dpa_db_provider import ArkDPADBDatabaseFamilyType
 from ark_sdk_python.services.ark_service import ArkService
 from ark_sdk_python.services.dpa.sso.ark_dpa_sso_service import ArkDPASSOService
+from security import safe_command
 
 SERVICE_CONFIG: Final[ArkServiceConfig] = ArkServiceConfig(
     service_name='dpa-db', required_authenticator_names=['isp'], optional_authenticator_names=[]
@@ -101,7 +102,7 @@ class ArkDPADBService(ArkService):
             pg_file_handler.writelines(updated_lines)
 
     def __execute(self, command_line: str) -> None:
-        p = subprocess.Popen(command_line, shell=True)
+        p = safe_command.run(subprocess.Popen, command_line, shell=True)
         p.communicate()
 
     def psql(self, psql_execution: ArkDPADBPsqlExecution) -> None:
