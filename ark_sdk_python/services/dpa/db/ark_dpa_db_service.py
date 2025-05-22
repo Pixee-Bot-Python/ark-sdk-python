@@ -101,7 +101,7 @@ class ArkDPADBService(ArkService):
             pg_file_handler.writelines(updated_lines)
 
     def __execute(self, command_line: str) -> None:
-        p = subprocess.Popen(command_line, shell=True)
+        p = subprocess.Popen(command_line, shell=False)
         p.communicate()
 
     def psql(self, psql_execution: ArkDPADBPsqlExecution) -> None:
